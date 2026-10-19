@@ -39,6 +39,8 @@ for (const file of htmlFiles) {
   for (const m of src.matchAll(/<img\b[^>]*>/g)) {
     ok(/\balt="/.test(m[0]), rel + ': img has alt: ' + m[0].slice(0, 80));
   }
+  ok(!/illustrative/i.test(src), rel + ': no illustrative wording');
+  ok(!/Name to follow|Role to follow|class="team"/.test(src), rel + ': no team placeholders');
   ok(!/\{\{/.test(src), rel + ': no raw template tokens');
   ok(/<a[^>]*href="privacy\.html"[^>]*>Privacy<\/a>/.test(src) || rel === 'privacy.html', rel + ': footer Privacy links to privacy.html');
 
