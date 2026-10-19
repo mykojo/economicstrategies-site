@@ -33,7 +33,7 @@ const FORMSPREE_ID = '';
       return;
     }
     if (!FORMSPREE_ID) {
-      say('The contact form is being connected. Please use the email address on this page.');
+      say('The contact form is being connected. Please write to us at the address on this page.');
       return;
     }
     btn.disabled = true;
@@ -47,11 +47,11 @@ const FORMSPREE_ID = '';
         form.reset();
         say('Thank you. Your message has been sent. We reply within two working days.');
       } else {
-        say('Sorry, that did not send. Please try again or use the email address on this page.');
+        say('Sorry, that did not send. Please try again or write to us at the address on this page.');
       }
     }).catch(function (err) {
       console.error('contact form send failed', err);
-      say('Sorry, that did not send. Please try again or use the email address on this page.');
+      say('Sorry, that did not send. Please try again or write to us at the address on this page.');
     }).then(function () {
       btn.disabled = false;
       btn.textContent = label;

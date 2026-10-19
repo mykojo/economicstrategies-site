@@ -104,7 +104,7 @@ function urlFor(p, hash) {
       await page.click('button[type=submit]');
       await page.waitForTimeout(400);
       const text = await page.locator('#formMsg').innerText();
-      check(text === 'The contact form is being connected. Please use the email address on this page.', `${name}: form message "${text}"`);
+      check(text === 'The contact form is being connected. Please write to us at the address on this page.', `${name}: form message "${text}"`);
       check(sent.length === 0, `${name}: form sent ${sent.length} formspree requests`);
       await page.screenshot({ path: path.join(outDir, `contact-form-${name}.png`) });
       await page.close();

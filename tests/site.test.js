@@ -62,6 +62,9 @@ for (const file of htmlFiles) {
   }
 }
 
+ok(fs.readFileSync(path.join(root,'contact.html'),'utf8').includes('8 Hillside Rd'), 'contact.html carries the address');
+ok(fs.readFileSync(path.join(root,'privacy.html'),'utf8').includes('8 Hillside Rd'), 'privacy.html carries the address');
+
 // four Read more links
 const index = fs.existsSync(path.join(root, 'index.html')) ? fs.readFileSync(path.join(root, 'index.html'), 'utf8') : '';
 for (const a of ['strategy', 'property', 'portfolio', 'incentives']) {
@@ -72,7 +75,7 @@ for (const a of ['strategy', 'property', 'portfolio', 'incentives']) {
 const siteJs = fs.existsSync(path.join(root, 'assets/js/site.js')) ? fs.readFileSync(path.join(root, 'assets/js/site.js'), 'utf8') : '';
 ok(/^const FORMSPREE_ID = '';/m.test(siteJs), 'site.js defines FORMSPREE_ID (empty this session)');
 ok(!DASH.test(siteJs), 'site.js: no dash characters');
-ok(siteJs.includes('The contact form is being connected. Please use the email address on this page.'), 'site.js carries the empty-id message');
+ok(siteJs.includes('The contact form is being connected. Please write to us at the address on this page.'), 'site.js carries the empty-id message');
 ok(/formspree\.io\/f\//.test(siteJs), 'site.js posts to formspree.io/f/<id>');
 
 // aria-current set statically on each page's own nav item
