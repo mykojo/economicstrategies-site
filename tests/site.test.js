@@ -62,8 +62,22 @@ for (const file of htmlFiles) {
   }
 }
 
-ok(fs.readFileSync(path.join(root,'contact.html'),'utf8').includes('8 Hillside Rd'), 'contact.html carries the address');
-ok(fs.readFileSync(path.join(root,'privacy.html'),'utf8').includes('8 Hillside Rd'), 'privacy.html carries the address');
+// Dublin is the head office (added 2026-10-28); Johannesburg stays as the South Africa office
+const read = (p) => fs.readFileSync(path.join(root, p), 'utf8');
+const contact = read('contact.html');
+ok(contact.includes('<span class="eyebrow">Head office</span><b>51 Bracken Road, Sandyford Business Park</b><span>Dublin 18, D18 CV48, Ireland</span>'), 'contact.html: Dublin head office block');
+ok(contact.includes('<span class="eyebrow">South Africa office</span><b>1st Flr, Blk B &amp; C, 8 Hillside Rd</b>'), 'contact.html: Johannesburg South Africa office block');
+ok(contact.indexOf('51 Bracken Road') > -1 && contact.indexOf('51 Bracken Road') < contact.indexOf('8 Hillside Rd'), 'contact.html: Dublin listed before Johannesburg');
+ok(read('privacy.html').includes('51 Bracken Road, Sandyford Business Park, Dublin 18, D18 CV48, Ireland.'), 'privacy.html: contact address is Dublin');
+for (const p of PAGES) {
+  ok(read(p + '.html').includes('<p class="offices">Head office: Dublin, Ireland<br>South Africa office: Johannesburg</p>'), p + '.html: footer offices line');
+}
+ok(/based in Dublin/.test(read('index.html')), 'index.html: lede says based in Dublin');
+ok(/Based in Dublin/.test(read('about.html')), 'about.html: story says based in Dublin');
+const ld = (read('index.html').match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/) || [])[1];
+let org = null; try { org = JSON.parse(ld); } catch (e) {}
+ok(org && org['@type'] === 'Organization' && org.address && org.address.postalCode === 'D18 CV48' && org.address.addressCountry === 'IE', 'index.html: Organization structured data with the Dublin address');
+ok(/footer \.offices\{/.test(read('assets/css/site.css')), 'site.css: footer offices style');
 
 // four Read more links
 const index = fs.existsSync(path.join(root, 'index.html')) ? fs.readFileSync(path.join(root, 'index.html'), 'utf8') : '';
